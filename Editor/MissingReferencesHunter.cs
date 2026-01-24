@@ -334,6 +334,49 @@ namespace MissingReferencesHunter
                                 }
                             }
                         }
+                        else if (line.Contains("m_AssetGUID:"))
+                        {
+                            if (line.Length < 32)
+                                continue;
+                            
+                            var externalGuid = line.Substring(line.Length - 32);
+                            var guidValid = !externalGuid.StartsWith("0000000000");
+
+                            if (!guidValid)
+                            {
+                                Debug.LogWarning($"Guid is invalid at {line}");
+                                continue;
+                            }
+
+                            var referenceData = new ExternalReferenceRegistry(true, guidValid, 0,
+                                externalGuid, index);
+                            refsData.ExternalReferences.Add(referenceData);
+
+                            var extendedPlaceDataRecorded = false;
+
+                            if (guidValid)
+                            {
+                                var existsInAssets = _result.Guids.Contains(externalGuid) ||
+                                                     !string.IsNullOrEmpty(
+                                                         AssetDatabase.GUIDToAssetPath(externalGuid));
+
+                                referenceData.GuidExistsInAssets = existsInAssets;
+                                referenceData.FileIDExistsInAssets = existsInAssets;
+
+                                if (!existsInAssets)
+                                {
+                                    RecordGuidPlaceData(index, lines, referenceData);
+                                    extendedPlaceDataRecorded = true;
+                                }
+                            }
+
+                            if (!extendedPlaceDataRecorded)
+                            {
+                                referenceData.Sample.Add(lines[index]);
+                            }
+
+                            FindFieldType(regexTypeStart, index, lines, referenceData);
+                        }
                     }
                 }
 
@@ -867,7 +910,7 @@ namespace MissingReferencesHunter
                             if (!_outputSettings.ShowMissingFileID && !guidIssue)
                                 continue;
 
-                            if (fileIdIssue)
+                            if (fileIdIssue && registry.FileID != 0)
                             {
                                 if (_outputSettings.ShowFileIDIssues || guidIssue)
                                 {
@@ -987,9 +1030,12 @@ namespace MissingReferencesHunter
         
         private void DrawInfoSection()
         {
-            EditorGUILayout.LabelField("[Missing FileID and Guid] - in 100% of cases indicates an error");
-            EditorGUILayout.LabelField("[Missing Guid] - most likely indicates an error");
-            EditorGUILayout.LabelField("Other FileID issues most likely do not indicate errors and are hidden by default");
+            EditorGUILayout.LabelField("* [Missing FileID and Guid] - in 100% of cases indicates an error");
+            EditorGUILayout.LabelField("* [Missing Guid] - most likely indicates an error");
+            EditorGUILayout.LabelField("Sometimes missing GUID can be compensated by FileID so we are not 100% that there is a problem");
+            EditorGUILayout.LabelField("However the tool still marks it as a warning for you to investigate");
+            
+            EditorGUILayout.LabelField("* Other FileID issues most likely do not indicate errors and are hidden by default");
             
             _infoFoldout = EditorGUILayout.Foldout(_infoFoldout, "Full Info");
 
@@ -1011,7 +1057,7 @@ namespace MissingReferencesHunter
             var prevColor = GUI.color;
             GUI.color = Color.red;
                 
-            EditorGUILayout.LabelField("[Missing FileID and Guid] - both identificators do not exist");
+            EditorGUILayout.LabelField("[Missing FileID and Guid] - both identifiers do not exist");
             EditorGUILayout.LabelField("* in that case we are 100% sure that there is a missing reference so we mark it with red color");
                 
             GUI.color = Color.yellow;
@@ -1020,7 +1066,7 @@ namespace MissingReferencesHunter
             EditorGUILayout.LabelField("[Missing FileId] - only FileId does not exist");
                 
             EditorGUILayout.LabelField("* this issues need further investigation by you");
-            EditorGUILayout.LabelField("* there might be or not a missing reference since it can be somehow processed by some internal code");
+            EditorGUILayout.LabelField("* there might be or not a missing reference since it can be somehow processed by some internal Unity code");
             EditorGUILayout.LabelField("* however [Missing Guid] most of the times indicates that there are some errors so we mark it as yellow");
             EditorGUILayout.LabelField("* [Missing FileId] usually involves more internal nuances and less likely indicates an error and so we mark it as non-warning (cyan)");
                 
@@ -1053,8 +1099,7 @@ namespace MissingReferencesHunter
                 
             EditorGUILayout.LabelField("[Missing Local FileID] - might indicate that there is some issue with internal objects referencing each other");
             EditorGUILayout.LabelField("[Empty Local FileID] - might indicate an empty internal field");
-            EditorGUILayout.LabelField("* these two fields most likely won't provide any usefull data for most users");
-            EditorGUILayout.LabelField("* however since we collect it for the analysis purpose we kept them in UI");
+            EditorGUILayout.LabelField("* these two fields provide some very specific info that is rarely needed for most of users");
                 
             EditorGUILayout.EndVertical();
                 
