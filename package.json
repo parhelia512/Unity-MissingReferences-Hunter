@@ -1,8 +1,8 @@
 {
   "name": "missing-references-hunter",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "displayName": "Missing References Hunter",
-  "description": "This tool finds missing or null references in Unity project assets.",
+  "description": "Tool for detecting missing and null references in project assets.",
   "unity": "2019.3",
   "keywords": [
     "references",
