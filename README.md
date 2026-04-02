@@ -28,12 +28,12 @@ The whole process might take few minutes for huge projects.
 
 Press "Run Analysis" button to run the analysis (can take several minutes depending on the size of your project).
 
-![plot](./Screenshots/main_window.png)
+![plot](./Screenshots~/main_window.png)
 
 ## Working with results
 
 * [Missing FileID and Guid] - in 100% of cases indicates an error like on the screenshot below
-![plot](./Screenshots/missing_reference_example.png)
+![plot](./Screenshots~/missing_reference_example.png)
 
 * [Missing Guid] - most likely indicates an error. Sometimes missing GUID can be compensated by FileID 
 so we are not 100% that there is a problem. However the tool still marks it as a warning for you to investigate
