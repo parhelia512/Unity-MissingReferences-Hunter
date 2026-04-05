@@ -88,7 +88,7 @@ these two fields provide some very specific info that is rarely needed for most 
 ## Installation
 
  1. Just copy and paste file [MissingReferencesHunter.cs](./Editor/MissingReferencesHunter.cs) inside Editor folder
- 2. via Unity's Package Manager 
+ 2. via Unity's Package Manager using link https://github.com/AlexeyPerov/Unity-MissingReferences-Hunter.git
 
 ## Contributions
 
