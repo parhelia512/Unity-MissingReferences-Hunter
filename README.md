@@ -92,14 +92,20 @@ these two fields provide some very specific info that is rarely needed for most 
 
 ## Contributions
 
-Feel free to [report bugs, request new features](https://github.com/AlexeyPerov/Unity-MissingReferences-Hunter/issues) 
-or to [contribute](https://github.com/AlexeyPerov/Unity-MissingReferences-Hunter/pulls) to this project!
+Feel free to report bugs, request new features
+or to contribute to this project!
+
+---
 
 ## Other tools
 
 ##### Dependencies Hunter
 
 - To find unreferenced assets in Unity project see [Dependencies-Hunter](https://github.com/AlexeyPerov/Unity-Dependencies-Hunter).
+
+##### Addressables Inspector
+
+- To analyze addressables layout [Addressables-Inspector](https://github.com/AlexeyPerov/Unity-Addressables-Inspector).
 
 ##### Textures Hunter
 
@@ -109,7 +115,12 @@ or to [contribute](https://github.com/AlexeyPerov/Unity-MissingReferences-Hunter
 
 - To analyze your materials and renderers see [Materials-Hunter](https://github.com/AlexeyPerov/Unity-Materials-Hunter).
 
- ##### Editor Coroutines
+##### Asset Inspector
+
+- To analyze asset dependencies [Asset-Inspector](https://github.com/AlexeyPerov/Unity-Asset-Inspector).
+
+##### Editor Coroutines
 
 - Unity Editor Coroutines alternative version [Lite-Editor-Coroutines](https://github.com/AlexeyPerov/Unity-Lite-Editor-Coroutines).
 - Simplified and compact version [Pocket-Editor-Coroutines](https://github.com/AlexeyPerov/Unity-Pocket-Editor-Coroutines).
+
